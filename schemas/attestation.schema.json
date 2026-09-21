@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ddcal.ca/spec/schemas/attestation.schema.json",
+  "title": "Joint Attestation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "case_id",
+    "case_revision",
+    "evidence_root",
+    "determination_roots",
+    "comparison_root",
+    "case_root",
+    "spec_version",
+    "attestors"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ddcal.independent-assurance.attestation/0.1"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "case_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "evidence_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "determination_roots": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    },
+    "comparison_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "case_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "spec_version": {
+      "type": "string"
+    },
+    "attestors": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "evaluator_id",
+          "attested_at"
+        ],
+        "properties": {
+          "evaluator_id": {
+            "type": "string"
+          },
+          "attested_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}

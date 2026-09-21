@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ddcal.ca/spec/schemas/case.schema.json",
+  "title": "Independent Assurance Case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "case_id",
+    "case_revision",
+    "spec_version",
+    "state",
+    "required_evaluators"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ddcal.independent-assurance.case/0.1"
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "spec_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "enum": [
+        "DRAFT",
+        "INTAKE_COMPLETE",
+        "EVIDENCE_CUTOFF_FROZEN",
+        "BUNDLE_FROZEN",
+        "INDEPENDENT_REVIEW",
+        "EVALUATOR_RESULTS_FROZEN",
+        "REVEAL_ALLOWED",
+        "COMPARISON_DRAFT",
+        "REPRESENTATION_CONFIRMED",
+        "JOINT_ATTESTED",
+        "CLOSED",
+        "EVALUATOR_DECLINED",
+        "EVALUATOR_WITHDRAWN",
+        "EVALUATOR_TIMEOUT",
+        "EVIDENCE_REJECTED",
+        "CONFLICT_DECLARED",
+        "BUNDLE_MISMATCH",
+        "DETERMINATION_INVALID",
+        "ATTESTATION_WITHHELD",
+        "CASE_WITHDRAWN"
+      ]
+    },
+    "required_evaluators": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
