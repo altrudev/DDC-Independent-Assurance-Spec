@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ddcal.ca/spec/schemas/evidence-cutoff.schema.json",
+  "title": "Evidence Cutoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "case_id",
+    "case_revision",
+    "cutoff_at",
+    "clock",
+    "evidence_items"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ddcal.independent-assurance.evidence-cutoff/0.1"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "case_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cutoff_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "clock": {
+      "type": "object",
+      "required": [
+        "normalization"
+      ],
+      "properties": {
+        "normalization": {
+          "const": "UTC"
+        },
+        "source": {
+          "type": "string"
+        },
+        "known_skew_ms": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "confidence": {
+          "enum": [
+            "HIGH",
+            "MEDIUM",
+            "LOW",
+            "UNKNOWN"
+          ]
+        }
+      }
+    },
+    "evidence_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "timing_class"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "timing_class": {
+            "enum": [
+              "CONTEMPORANEOUS",
+              "EXISTED_UNAVAILABLE_AT_BOUNDARY",
+              "LATER_RECONSTRUCTION"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
