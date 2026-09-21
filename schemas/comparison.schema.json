@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ddcal.ca/spec/schemas/comparison.schema.json",
+  "title": "Comparison",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "case_id",
+    "case_revision",
+    "evidence_root",
+    "determinations",
+    "items",
+    "representation_confirmations"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ddcal.independent-assurance.comparison/0.1"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "case_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "evidence_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "determinations": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "category",
+          "status",
+          "summary"
+        ],
+        "properties": {
+          "category": {
+            "enum": [
+              "CONVERGENCE",
+              "EVALUATOR_SPECIFIC",
+              "CONCLUSION_DISAGREEMENT",
+              "EVIDENTIARY_BOUNDARY_DISAGREEMENT",
+              "UNRESOLVED",
+              "OUT_OF_SCOPE"
+            ]
+          },
+          "status": {
+            "enum": [
+              "ESTABLISHED",
+              "NOT_ESTABLISHED",
+              "PARTIALLY_ESTABLISHED",
+              "UNRESOLVED",
+              "CONTRADICTED",
+              "OUT_OF_SCOPE"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "representation_confirmations": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "evaluator_id",
+          "confirmed"
+        ],
+        "properties": {
+          "evaluator_id": {
+            "type": "string"
+          },
+          "confirmed": {
+            "type": "boolean"
+          },
+          "confirmed_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
