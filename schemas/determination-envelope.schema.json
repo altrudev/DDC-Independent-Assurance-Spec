@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ddcal.ca/spec/schemas/determination-envelope.schema.json",
+  "title": "Determination Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "case_id",
+    "case_revision",
+    "evidence_root",
+    "cutoff_root",
+    "evaluator",
+    "method",
+    "determination_root",
+    "frozen_at"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ddcal.independent-assurance.determination-envelope/0.1"
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "evidence_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "cutoff_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "evaluator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        }
+      }
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "determination_root": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "frozen_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
