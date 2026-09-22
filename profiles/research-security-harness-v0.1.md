@@ -31,7 +31,47 @@ A finding may still be valid when closure is incomplete. In that case, missing l
 11. External reproduction is revision-specific. Reproduction of revision A does not validate revision B unless continuity or a new rerun is evidenced.
 12. Chronology is not causality.
 
-## 3. Required evidence objects
+## 3. Frozen evidence bundle
+
+Every determination MUST bind to one immutable evidence snapshot.
+
+Minimum bundle identity:
+
+- bundle_id
+- profile_version
+- evidence_cutoff
+- evidence_root_hash
+- evaluator_id or evaluator pseudonym
+- determination_id
+
+Evidence discovered after the cutoff MUST NOT silently mutate the earlier determination. It creates a new bundle/determination linked by an explicit relation such as `extends`, `supersedes`, `reproduces`, or `contradicts`.
+
+Two independent evaluators may reason differently while evaluating the same frozen bundle.
+
+## 4. Evidence reference state
+
+Absence must not be overloaded. An evidence reference SHOULD explicitly distinguish:
+
+- PRESENT
+- ABSENT
+- UNKNOWN
+- UNAVAILABLE
+- REDACTED
+- NOT_APPLICABLE
+
+Where material, the reference SHOULD also represent:
+
+- existence
+- reachability
+- discoverability
+- freshness/timeliness
+- accessibility/authorization
+- trustworthiness/verification state
+- actual consultation
+
+A redacted or privately held artifact may still participate in a closed channel when its immutable identity, authority to rely on it, and relevant verification claims are properly bound without disclosing sensitive contents.
+
+## 5. Required evidence objects
 
 ### SourceArtifact
 Identifies the externally supplied source under review.
@@ -70,7 +110,7 @@ Required: report URI, publication time, report revision, repository commit or im
 Records third-party reproduction without broadening it.
 Required: external actor or reference, exact artifact or commit reproduced, environment if known, findings reproduced, result, source of the statement, and later revisions not covered.
 
-## 4. Evidence-channel closure dispositions
+## 6. Evidence-channel closure dispositions
 
 CLOSED — every material transition from acquisition through publication is bound to inspectable evidence and no unresolved gap can change the stated claim.
 
@@ -82,7 +122,7 @@ CONTRADICTED — trusted evidence conflicts with a material claim or provenance 
 
 These dispositions assess the evidence channel, not whether the underlying software is secure.
 
-## 5. Mandatory gates
+## 7. Mandatory gates
 
 A conforming assurance run must fail closed when a material finding depends on any of the following:
 
@@ -95,7 +135,7 @@ A conforming assurance run must fail closed when a material finding depends on a
 7. an external reproduction claim does not identify the revision reproduced;
 8. later evidence has overwritten or obscured the original finding state.
 
-## 6. Strongly recommended controls
+## 8. Strongly recommended controls
 
 - pre-extraction validation of path traversal, absolute paths, symlinks, hard links, and special entries;
 - per-member archive-to-retained-source manifest;
@@ -109,13 +149,68 @@ A conforming assurance run must fail closed when a material finding depends on a
 - public reconstruction of derived datasets where disclosure permits;
 - branch-preserving lineage when alternate reproducer paths exist.
 
-## 7. Finding lifecycle
+## 9. Finding evidence graph
 
-OBSERVED -> HYPOTHESIS -> WITNESS_CREATED -> CONTROLLED -> ADJUDICATED -> PUBLISHED -> EXTERNALLY_REPRODUCED (optional) -> FIXED | SUPERSEDED | RETRACTED | STILL_OPEN
+A finding MUST NOT be forced into one linear lifecycle when the evidence branches.
 
-Each transition earns its own certainty. A later state must not automatically inherit certainty from an earlier one.
+Recommended node types include:
 
-## 8. Minimal machine-readable envelope
+- observation
+- hypothesis
+- source artifact
+- transformation
+- build
+- witness
+- control
+- adjudication
+- publication
+- external reproduction
+- fix
+- superseding finding
+
+Recommended edge types include:
+
+- derived_from
+- tests
+- supports
+- contradicts
+- falsifies
+- transforms
+- observed_under
+- reproduces
+- supersedes
+- extends
+
+Each node and edge earns its own certainty. Alternate hypotheses, retries, environments, and independent reproductions must remain distinct rather than being collapsed into a final timeline.
+
+Later investigation, recovery, reconciliation, reruns, or patches MUST NOT contaminate the evidence used to reconstruct an earlier state.
+
+## 10. Claim and contradiction separation
+
+Claim state and evidence-channel state are independent dimensions.
+
+Recommended claim states:
+
+- CONFIRMED
+- PROBABLE
+- HYPOTHESIS
+- NOT_REPRODUCED
+- REFUTED
+- INDETERMINATE
+
+Recommended evidence-channel states remain CLOSED, CONDITIONALLY_CLOSED, OPEN, and CONTRADICTED.
+
+A CONFIRMED claim may have an OPEN evidence channel. An INDETERMINATE claim may have a CLOSED evidence channel.
+
+A contradiction record SHOULD identify its target, for example source_identity, transformation_identity, build_identity, witness, claim, or publication_binding. A contradiction in provenance must not automatically be presented as refutation of the technical claim.
+
+## 11. Representation binding
+
+Cryptographic binding requires a defined representation. Machine-readable receipts SHOULD define canonical serialization or another unambiguous content-addressing rule before computing evidence roots, receipt hashes, or signatures.
+
+Equivalent logical content represented by different byte serializations must not accidentally be treated as the same cryptographic object unless the profile explicitly defines that equivalence.
+
+## 12. Minimal machine-readable envelope
 
 Required top-level fields:
 - schema
@@ -130,14 +225,17 @@ Required top-level fields:
 - publication
 - external_reproduction
 - evidence_channel
+- bundle_identity
+- graph
+- contradictions
 
 Recommended schema identifier: ddc-research-harness-assurance/0.1
 
-## 9. Non-goals
+## 13. Non-goals
 
 This profile does not decide vulnerability severity, decide whether cryptographic assumptions are sound, replace domain experts, require disclosure of proprietary reasoning, require disclosure of sensitive exploit material, equate reproducibility with correctness, or equate AI assistance with either weakness or authority.
 
-## 10. Relationship to DDC Independent Assurance
+## 14. Relationship to DDC Independent Assurance
 
 This profile is a domain-specific application of DDC Independent Assurance principles.
 
